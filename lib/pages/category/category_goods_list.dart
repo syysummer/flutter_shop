@@ -20,23 +20,36 @@ class CategoryGoodsList extends StatefulWidget {
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
+  GlobalKey _easyRefreshKey = new GlobalKey();
+
+  var scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Consumer<CategoryGoodsProvide>(
       builder: (context, categoryGoodsProvide, child) {
         if (categoryGoodsProvide.list != null &&
             categoryGoodsProvide.list.length != 0) {
-          return SingleChildScrollView(
-            child: Container(
-              width: ScreenUtil().setWidth(570),
-              height: ScreenUtil().setHeight(980),
-              child: ListView.builder(
-                itemCount: categoryGoodsProvide.list.length,
-                itemBuilder: (context, index) {
-                  return _ListWidget(categoryGoodsProvide.list, index);
-                },
+          return new EasyRefresh(
+            key: _easyRefreshKey,
+            footer: MaterialFooter(),
+            firstRefresh: true,
+            child: SingleChildScrollView(
+              child: Container(
+                width: ScreenUtil().setWidth(570),
+                height: ScreenUtil().setHeight(980),
+                child: ListView.builder(
+                  itemCount: categoryGoodsProvide.list.length,
+                  itemBuilder: (context, index) {
+                    return _ListWidget(categoryGoodsProvide.list, index);
+                  },
+                ),
               ),
             ),
+            // onRefresh: () async{ .... },
+            onLoad: () async {
+              print('开始加载更多');
+              // _getHotGoods();
+            },
           );
         } else {
           return Container(
@@ -111,5 +124,19 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
                 color: Colors.black26, decoration: TextDecoration.lineThrough),
           )
         ]));
+  }
+
+  void _getGoodsList({String categoryId}) async {
+    var data = {
+      "categoryId": categoryId == null ? "4" : categoryId,
+      "categorySubId": "",
+      "page": 1,
+    };
+    await request("getMallGoods", formData: data).then((onValue) {
+      var data = json.decode(onValue.toString());
+      CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
+      Provider.of<CategoryGoodsProvide>(context, listen: false)
+          .getCategoryGoodsList(goodsList.data);
+    });
   }
 }
