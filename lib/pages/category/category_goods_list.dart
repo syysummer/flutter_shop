@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluro/fluro.dart';
+import '../../routers/application.dart';
 
 class CategoryGoodsList extends StatefulWidget {
   @override
@@ -20,7 +23,7 @@ class CategoryGoodsList extends StatefulWidget {
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
-  GlobalKey _easyRefreshKey = new GlobalKey();
+  GlobalKey _footerKey = new GlobalKey();
 
   var scrollController = ScrollController();
   @override
@@ -29,27 +32,34 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
       builder: (context, categoryGoodsProvide, child) {
         if (categoryGoodsProvide.list != null &&
             categoryGoodsProvide.list.length != 0) {
-          return new EasyRefresh(
-            key: _easyRefreshKey,
-            footer: MaterialFooter(),
-            firstRefresh: true,
-            child: SingleChildScrollView(
-              child: Container(
-                width: ScreenUtil().setWidth(570),
-                height: ScreenUtil().setHeight(980),
-                child: ListView.builder(
-                  itemCount: categoryGoodsProvide.list.length,
-                  itemBuilder: (context, index) {
-                    return _ListWidget(categoryGoodsProvide.list, index);
-                  },
-                ),
+          try {
+            if (Provider.of<ChildCategory>(context, listen: false).page == 1) {
+              //需要把列表位置放到最上边
+              scrollController.jumpTo(0.0);
+            }
+          } catch (err) {
+            print(err);
+          }
+
+          return Container(
+            width: ScreenUtil().setWidth(570),
+            height: ScreenUtil().setHeight(980),
+            child: EasyRefresh(
+              key: _footerKey,
+              footer: MaterialFooter(),
+              firstRefresh: true,
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: categoryGoodsProvide.list.length,
+                itemBuilder: (context, index) {
+                  return _ListWidget(categoryGoodsProvide.list, index);
+                },
               ),
+              onLoad: () async {
+                print('开始加载更多');
+                _getMoreList();
+              },
             ),
-            // onRefresh: () async{ .... },
-            onLoad: () async {
-              print('开始加载更多');
-              // _getHotGoods();
-            },
           );
         } else {
           return Container(
@@ -65,7 +75,11 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
 
   Widget _ListWidget(List newList, int index) {
     return InkWell(
-        onTap: () {},
+        onTap: () {
+          print('去详情');
+          String goodsId = newList[index].goodsId;
+          Application.router.navigateTo(context, "detail?id=${goodsId}");
+        },
         child: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
           decoration: BoxDecoration(
@@ -126,17 +140,34 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
         ]));
   }
 
-  void _getGoodsList({String categoryId}) async {
+  void _getMoreList() async {
+    Provider.of<ChildCategory>(context, listen: false).addPage();
     var data = {
-      "categoryId": categoryId == null ? "4" : categoryId,
-      "categorySubId": "",
-      "page": 1,
+      "categoryId":
+          Provider.of<ChildCategory>(context, listen: false).categoryId,
+      "categorySubId": Provider.of<ChildCategory>(context, listen: false).subId,
+      "page": Provider.of<ChildCategory>(context, listen: false).page,
     };
     await request("getMallGoods", formData: data).then((onValue) {
       var data = json.decode(onValue.toString());
       CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
-      Provider.of<CategoryGoodsProvide>(context, listen: false)
-          .getCategoryGoodsList(goodsList.data);
+      print(goodsList.data);
+      if (goodsList.data == null) {
+        print('进来了');
+        Fluttertoast.showToast(
+          msg: "没有更多数据了",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          // backgroundColor: Colors.pink,
+          // textColor: Colors.white,
+          // fontSize: ScreenUtil().setSp(26),
+        );
+        Provider.of<ChildCategory>(context, listen: false)
+            .changeNoMore("没有更多数据了");
+      } else {
+        Provider.of<CategoryGoodsProvide>(context, listen: false)
+            .getMoreList(goodsList.data);
+      }
     });
   }
 }

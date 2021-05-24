@@ -37,7 +37,7 @@ class _IndexPageState extends State<IndexPage> {
     MemberPage(),
   ];
 
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   var currentPage;
 
   void initState() {

@@ -1,6 +1,20 @@
 # This is a generated file; do not edit or check into version control.
+fluttertoast=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\fluttertoast-7.1.8\\
+import_js_library=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\import_js_library-1.0.2\\
+path_provider_linux=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_linux-0.0.1+2\\
+path_provider_windows=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_windows-0.0.5\\
+shared_preferences=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.12+4\\
+shared_preferences_linux=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_linux-0.0.2+4\\
+shared_preferences_macos=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+11\\
+shared_preferences_web=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_web-0.1.2+7\\
+shared_preferences_windows=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_windows-0.0.2+3\\
 url_launcher=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher-5.7.10\\
 url_launcher_linux=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher_linux-0.0.1+4\\
 url_launcher_macos=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher_macos-0.0.1+9\\
 url_launcher_web=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher_web-0.1.5+3\\
 url_launcher_windows=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher_windows-0.0.1+3\\
+video_player=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\video_player-1.0.1\\
+video_player_web=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\video_player_web-0.1.4+1\\
+wakelock=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\wakelock-0.2.1+1\\
+wakelock_web=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\wakelock_web-0.1.0+3\\
+webview_flutter=F:\\flutterLearn\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\webview_flutter-1.0.7\\
